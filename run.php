@@ -1,14 +1,14 @@
 <?php
 /* Configurations */
-$url = 'http://some-site.com/some-url/some-page.html';
+$url = '';
 
 $allow_extentions = array('css', 'js', 'jpg', 'png', 'gif', 'svg', 'ttf', 'woff', 'woff2', 'eot');
 set_time_limit(180); // 3 minutes
 
 // web: run.php?page-address, cli: php run.php?page-address
-if ($_SERVER['HTTP_USER_AGENT'] && $_SERVER['QUERY_STRING'])
+if (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'] && $_SERVER['QUERY_STRING'])
 	$url = $_SERVER['QUERY_STRING'];
-elseif(!$_SERVER['HTTP_USER_AGENT'] && isset($argv[1]))
+elseif((!isset($_SERVER['HTTP_USER_AGENT']) || !$_SERVER['HTTP_USER_AGENT']) && isset($argv[1]))
 	$url = $argv[1];
 
 $urlparse = parse_url($url);
@@ -47,7 +47,7 @@ function get_file($url)
 
 function echo_log($text)
 {
-	if ($_SERVER['HTTP_USER_AGENT'])
+	if (isset($_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_USER_AGENT'])
 	{
 		echo $text.'<br>';
 	}
@@ -72,7 +72,8 @@ function create_folders($folders)
 	{
 		$path .= $folder.'/';
 		if(!is_dir($path))
-			mkdir($path, 777);
+			if(!mkdir($path, 0777))
+				echo_log('Can`t create the folder "'.$path.'"');
 	}
 }
 
