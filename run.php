@@ -1,6 +1,6 @@
 <?php
 /* Configurations */
-$url = '';
+$url = 'https://santehnika-online.ru/';
 
 $allow_extentions = array('css', 'js', 'jpg', 'png', 'gif', 'svg', 'ttf', 'woff', 'woff2', 'eot');
 set_time_limit(180); // 3 minutes
@@ -115,7 +115,7 @@ function search_files_in_css($matches)
 				$filepath = substr($filepath, 0, strrpos($filepath,'?'));
 
 			// Changes in css file
-			$css_file = $entity; 
+			$css_file = $entity;
 			if (substr($css_file, 0, 1) == '/')
 			{
 				$css_file = substr($css_file, 1);
@@ -127,6 +127,8 @@ function search_files_in_css($matches)
 			{
 				$root_way = substr($root_way, 0, strrpos($root_way,'/'));
 				$dots_way .= '../';
+				if (!$root_way)
+					break;
 			}
 			$css_path = str_replace($root_way, $dots_way, $filepath);
 
@@ -146,7 +148,7 @@ function search_files_in_css($matches)
 
 			while(substr($file_url, 0, 3) == '../')
 			{
-				
+
 				$file_url = substr($file_url, 3);
 				if (substr($current_folder, -1) == '/')
 					$current_folder = substr($current_folder, 0, -1);
@@ -162,7 +164,7 @@ function search_files_in_css($matches)
 				$filepath = substr($filepath, 0, strrpos($filepath,'?'));
 			if (substr($filepath, 0, 1) == '/')
 				$filepath = substr($filepath, 1);
-			
+
 			if (substr($entity, 0, 1) == '/')
 			{
 				$urlparse = parse_url($url);
